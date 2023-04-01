@@ -1,7 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { Button, TextField } from '@aws-amplify/ui-react';
+import { Alert, Button, TextField } from '@aws-amplify/ui-react';
 import Subscriptions from './Subscriptions';
 
 import {
@@ -111,7 +111,7 @@ const CourseFinder = () => {
           setError(error);
         }
       )
-  }, []);
+  }, [user.signInUserSession.idToken.jwtToken]);
 
   useEffect(() => {
     refreshSubscriptions();
@@ -119,6 +119,8 @@ const CourseFinder = () => {
 
   return (
     <>
+
+      {errorState ?? <Alert variation="error">{errorState}</Alert> }
 
       <Subscriptions
         subscriptions={subscriptions}
