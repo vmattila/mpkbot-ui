@@ -1,7 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
-import { Button, Flex, TextField, CheckboxField } from '@aws-amplify/ui-react';
+import { Button, TextField } from '@aws-amplify/ui-react';
 import Subscriptions from './Subscriptions';
 
 import {
@@ -13,8 +13,8 @@ import {
 } from '@aws-amplify/ui-react';
 
 const CourseFinder = () => {
-  const { user, signOut } = useAuthenticator((context) => [context.user]);
-  const [error, setError] = useState(null);
+  const { user } = useAuthenticator((context) => [context.user]);
+  const [errorState, setError] = useState(null);
   const [keywords, setKeywords] = useState('');
   const [notKeywords, setNotKeywords] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +94,7 @@ const CourseFinder = () => {
 
   const [subscriptions, setSubscriptions] = useState([]);
 
-  const refreshSubscriptions = () => {
+  const refreshSubscriptions = useCallback(() => {
     setIsLoading(true);
     setSubscriptions([]);
     fetch(`${process.env.REACT_APP_API_URL_BASE}/subscriptions`,{
@@ -111,9 +111,11 @@ const CourseFinder = () => {
           setError(error);
         }
       )
-  };
+  }, []);
 
-  useEffect(() => refreshSubscriptions, []);
+  useEffect(() => {
+    refreshSubscriptions();
+  }, [refreshSubscriptions]);
 
   return (
     <>

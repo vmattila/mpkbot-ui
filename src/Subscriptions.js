@@ -1,6 +1,4 @@
-import { useAuthenticator } from '@aws-amplify/ui-react';
-import React, { useState, useEffect } from 'react';
-
+import React from 'react';
 import { Button } from '@aws-amplify/ui-react';
 
 import {
