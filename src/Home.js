@@ -1,16 +1,16 @@
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import CourseFinder from './CourseFinder';
 import { Auth } from 'aws-amplify';
-
+import { Button } from '@aws-amplify/ui-react';
 const Home = () => {
-  const { user } = useAuthenticator((context) => [context.user]);
-
   return (
     <>
-      <h2>Welcome, {user.username}!</h2>
-      <button onClick={() => Auth.signOut()}>
-        Signout
-    </button>
+      <Button
+        variation="default"
+        onClick={() => Auth.signOut()}
+        ariaLabel=""
+      >
+        Kirjaudu ulos
+      </Button>
       <CourseFinder />
     </>
   );

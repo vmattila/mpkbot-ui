@@ -1,39 +1,57 @@
 import React from 'react';
-import { Button } from '@aws-amplify/ui-react';
-
 import {
-  Table,
-  TableCell,
-  TableBody,
-  TableHead,
-  TableRow,
+  Collection,
+  Card,
+  View,
+  Flex,
+  Badge,
+  Button,
+  Heading,
+  Text,
 } from '@aws-amplify/ui-react';
 
 const Subscriptions = (props) => {
   
   return (
     <>
-      <Table>
-    <TableHead>
-      <TableRow>
-        <TableCell as="th">Hakusana</TableCell>
-        <TableCell as="th">Ei-hakusana</TableCell>
-        <TableCell as="th"></TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-    {props.subscriptions.map((value, index) => {
-          return <TableRow key="{value.id}">
-          <TableCell>{value.keywords}</TableCell>
-          <TableCell>{value.not_keywords}</TableCell>
-          <TableCell>
-            <Button onClick={() => props.onDropSubscription(value.id)}>Poista</Button>
-          </TableCell>
-        </TableRow>
-        })}
-      
-    </TableBody>
-  </Table>
+    <h2>Aktiiviset hakuvahtisi</h2>
+
+    <Collection
+  items={props.subscriptions}
+  type="list"
+  direction="row"
+  gap="20px"
+  wrap="nowrap"
+  searchNoResultsFound={
+    <Flex justifyContent="center">
+      <Text color="purple.80" fontSize="1rem">
+        Sinulla ei ole vielä hakuvahteja. Lisää hakuvahti alta.
+      </Text>
+    </Flex>
+  }
+>
+  {(item, index) => (
+    <Card
+      key={index}
+      borderRadius="medium"
+      variation="outlined"
+      backgroundColor='blue.10'
+    >
+      <View padding="xs">
+        <Flex>
+        <Heading level={4}>{item.keywords}</Heading>
+            {item.not_keywords && <Badge
+                  backgroundColor="red.40"
+                >
+                  {item.not_keywords}
+                </Badge>}
+        </Flex>
+        <Button onClick={() => props.onShowCourses(item.id, item.keywords, item.not_keywords)}>Näytä kurssit</Button>
+        <Button onClick={() => props.onDropSubscription(item.id)}>Poista</Button>
+      </View>
+    </Card>
+  )}
+</Collection>
     </>
   );
 };
