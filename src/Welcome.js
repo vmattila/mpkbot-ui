@@ -16,6 +16,8 @@ const Welcome = () => {
 
       <Heading level={1}>MPK Bot</Heading>
 
+      <Heading level={4} fontStyle='italic' fontWeight={200}>Älä enää missaa kiinnostavaa kurssia - jätä Koulutuskalenterin vahtiminen MPK Botin huoleksi!</Heading>
+
       <Text lineHeight="1.5em">
           MPK Bot lähettää sinulle sähköpostitse tiedon uusista Maanpuolustuskoulutusyhdistyksen
           kursseista antamillasi hakusanoilla. Esimerkiksi jos lisäät hakusanan "ammunta", saat
