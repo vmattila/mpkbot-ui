@@ -1,12 +1,14 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { Alert, Button, TextField, Expander, ExpanderItem } from '@aws-amplify/ui-react';
+import { Alert, Button, TextField, Expander, ExpanderItem, Loader, Flex, Text } from '@aws-amplify/ui-react';
 import Subscriptions from './Subscriptions';
+import SearchTokens from './SearchTokens';
 
 import CourseList from './CourseList';
 
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/dist/sweetalert2.css'
 import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
@@ -14,33 +16,39 @@ const MySwal = withReactContent(Swal)
 const CourseFinder = () => {
   const { user } = useAuthenticator((context) => [context.user]);
   const [errorState, setError] = useState(null);
-  const [keywords, setKeywords] = useState('');
-  const [notKeywords, setNotKeywords] = useState('');
+  const [tokens, setTokens] = useState([]);
+  const [keyword, setKeyword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [tokensSearched, setTokensSearched] = useState([]);
+  const [showAddNewSubscription, setShowAddNewSubscription] = useState(false);
   const [items, setItems] = useState([]);
   
-  const handleKeywordChange = (event) => {
-    setKeywords(event.target.value);
-  }
-  const handleNotKeywordChange = (event) => {
-    setNotKeywords(event.target.value);
-  }
+  useEffect(() => {
+    const parts = keyword.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+    const filtered = parts.map(e => e.trim()).filter((x) => {
+      return x.length > 1
+    }).filter((value, index, array) => array.indexOf(value) === index);
+    setTokens(filtered);
+  }, [keyword]);
 
   const handleAddSubscription = (event) => {
     setItems([]);
     setIsLoading(true);
+    setShowAddNewSubscription(false)
+    setError(undefined);
     fetch(`${process.env.REACT_APP_API_URL_BASE}/subscriptions`,{
       method: "POST",
       headers: {Authorization: `Bearer ${user.signInUserSession.idToken.jwtToken}`},
       body: JSON.stringify({
-        keywords: keywords,
-        not_keywords: notKeywords ? notKeywords : null,
+        tokens: tokens,
       })
     })
       .then(res => res.json())
       .then(
         (result) => {
           setIsLoading(false);
+          setKeyword('');
+          setTokens([]);
           refreshSubscriptions();
         },
         (error) => {
@@ -52,10 +60,12 @@ const CourseFinder = () => {
   }
   const handleDropSubscription = (subscriptionId) => {
     setItems([]);
+    setError(undefined);
+    setShowAddNewSubscription(false)
     MySwal.fire({
-      title: <p>Oletko varma</p>,
+      title: <p>Oletko varma, että haluat poistaa vahdin?</p>,
       showDenyButton: true,
-      showCancelButton: true,
+      showCancelButton: false,
       confirmButtonText: 'Kyllä, poista',
       denyButtonText: 'Ei, älä poista',
     }).then((resp) => {
@@ -80,13 +90,14 @@ const CourseFinder = () => {
     })
   }
 
-  const onShowCourses = (subscriptionId, keywords, notKeywords) => {
+  const onShowCourses = (subscriptionId, keywords) => {
     setIsLoading(true);
+    setError(undefined);
     setItems([]);
+    setTokensSearched([]);
     fetch(`${process.env.REACT_APP_API_URL_BASE}/courses?`
       + new URLSearchParams({
-        keywords: keywords || '',
-        not_keywords: notKeywords || '',
+        tokens: JSON.stringify(keywords),
     }),{
       headers: {Authorization: `Bearer ${user.signInUserSession.idToken.jwtToken}`}
     })
@@ -95,6 +106,7 @@ const CourseFinder = () => {
         (result) => {
           setIsLoading(false);
           setItems(result.courses);
+          setTokensSearched(keywords);
         },
         (error) => {
           setIsLoading(false);
@@ -107,6 +119,7 @@ const CourseFinder = () => {
 
   const refreshSubscriptions = useCallback(() => {
     setIsLoading(true);
+    setError(undefined);
     setSubscriptions([]);
     fetch(`${process.env.REACT_APP_API_URL_BASE}/subscriptions`,{
       headers: {Authorization: `Bearer ${user.signInUserSession.idToken.jwtToken}`}
@@ -116,6 +129,7 @@ const CourseFinder = () => {
         (result) => {
           setIsLoading(false);
           setSubscriptions(result.subscriptions);
+          setShowAddNewSubscription(result.subscriptions.length === 0)
         },
         (error) => {
           setIsLoading(false);
@@ -129,41 +143,77 @@ const CourseFinder = () => {
   }, [refreshSubscriptions]);
 
   return (
-    <>
+    <Flex direction="column">
 
-      {errorState && <Alert variation="error">{errorState}</Alert> }
+      {errorState && <Alert variation="error">{errorState.message}</Alert> }
 
       <Subscriptions
         subscriptions={subscriptions}
         onDropSubscription={handleDropSubscription}
         onShowCourses={onShowCourses}
+        isLoading={!!isLoading}
       />
 
-      
-{items && items.length > 0 && <CourseList items={items} />}
+      <Expander type="single" isCollapsible={true} defaultValue={showAddNewSubscription ? "add" : ""}>
+        <ExpanderItem title={
+          <Text fontWeight={600}>Lisää uusi hakuvahti</Text>
+        } value="add">
+              <Flex direction="column">
+                <TextField
+                  label="Hakuehto"
+                  isRequired={true}
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.currentTarget.value)}
+                  placeholder={"esim. tiedustelu -osint"}
+                />
+                <SearchTokens tokens={tokens}></SearchTokens>
 
-<Expander type="single" isCollapsible={true} defaultValue={["add"]}>
-<ExpanderItem title="Lisää uusi hakuvahti" value="add">
-      <h2>Lisää uusi hakuvahti</h2>
+                <Flex direction="row">
+                  <Button
+                    variation="primary"
+                    loadingText="..."
+                    onClick={handleAddSubscription}
+                    ariaLabel=""
+                    isLoading={!!isLoading}
+                    isDisabled={!(tokens && tokens.length > 0)}
+                    type="submit"
+                  >
+                    Lisää uusi hakuvahti
+                  </Button>
 
-      <div>
-        <TextField label="Avainsanat" isRequired={true} onChange={handleKeywordChange} />
-        <TextField label="Avainsanat, joita ei saa olla" onChange={handleNotKeywordChange} />
-        <Button
-          variation="primary"
-          loadingText="Etsitään..."
-          onClick={handleAddSubscription}
-          ariaLabel=""
-          isLoading={!!isLoading}
-          type="submit"
-        >
-          Lisää hakuvahti
-        </Button>
-      </div>
-</ExpanderItem>
+                  <Button
+                    variation="default"
+                    loadingText="..."
+                    onClick={() => {
+                      onShowCourses(undefined, tokens)
+                    }}
+                    ariaLabel=""
+                    isLoading={!!isLoading}
+                    isDisabled={!(tokens && tokens.length > 0)}
+                  >
+                    Esikatsele kursseja tällä hakuehdolla
+                  </Button>
+                </Flex>
+
+                <Text fontSize="small">
+                      Esimerkkejä hakuehdoista:
+                      <ul>
+                        <li><Text as="span" fontFamily={"monospace"} fontWeight={600} style={{color: "darkred"}}>sra peruskurssi</Text> löytää SRA-peruskurssit</li>
+                        <li><Text as="span" fontFamily={"monospace"} fontWeight={600} style={{color: "darkred"}}>ammunta upinniemi</Text> löytää kaikki Upinniemessä järjestettävät ammunnat</li>
+                        <li><Text as="span" fontFamily={"monospace"} fontWeight={600} style={{color: "darkred"}}>"kunnossa inttiin" niinisalo</Text> löytää kaikki Niinisalossa järjestettävät Kunnossa inttiin -kurssit</li>
+                        <li><Text as="span" fontFamily={"monospace"} fontWeight={600} style={{color: "darkred"}}>tiedustelu -osint</Text> löytää tiedusteluun liittyvät kurssit, mutta jättää pois osint-kurssit</li>
+                      </ul>
+                    </Text>
+              </Flex>
+        </ExpanderItem>
       </Expander>
 
-    </>
+      
+      {!!isLoading && <Loader />}
+      {tokensSearched && tokensSearched.length > 0 && !items.length && <Alert variation="info">Kursseja ei löytynyt hakuehdoilla {tokensSearched.join(" ")}</Alert>}
+      {tokensSearched && tokensSearched.length > 0 && items.length > 0 && <CourseList items={items} />}
+
+    </Flex>
   );
 };
 export default CourseFinder;

@@ -6,7 +6,7 @@ const App = () => {
   const { authStatus } = useAuthenticator(context => [context.authStatus]);
 
   return (
-    <div style={{"max-width": "1000px", "margin": "auto"}}>
+    <div style={{maxWidth: "1000px", margin: "auto"}}>
       {authStatus !== 'authenticated' ? <Welcome /> : <Home /> }
     </div>
   )

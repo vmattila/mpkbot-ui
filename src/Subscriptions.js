@@ -1,20 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Collection,
   Card,
-  View,
   Flex,
-  Badge,
   Button,
   Heading,
   Text,
+  Loader,
 } from '@aws-amplify/ui-react';
+import SearchTokens from './SearchTokens';
 
 const Subscriptions = (props) => {
-  
+  const [isLoading] = useState(!!props.isLoading);
   return (
     <>
-    <h2>Aktiiviset hakuvahtisi</h2>
+    {!!isLoading ? <Loader /> : <>
+    <Heading level={2}>Aktiiviset hakuvahtisi</Heading>
 
     <Collection
   items={props.subscriptions}
@@ -24,7 +25,7 @@ const Subscriptions = (props) => {
   wrap="nowrap"
   searchNoResultsFound={
     <Flex justifyContent="center">
-      <Text color="purple.80" fontSize="1rem">
+      <Text color="grey.80" fontSize="1rem">
         Sinulla ei ole vielä hakuvahteja. Lisää hakuvahti alta.
       </Text>
     </Flex>
@@ -34,24 +35,22 @@ const Subscriptions = (props) => {
     <Card
       key={index}
       borderRadius="medium"
-      variation="outlined"
       backgroundColor='blue.10'
     >
-      <View padding="xs">
-        <Flex>
-        <Heading level={4}>{item.keywords}</Heading>
-            {item.not_keywords && <Badge
-                  backgroundColor="red.40"
-                >
-                  {item.not_keywords}
-                </Badge>}
+      <Flex direction="column">
+        <SearchTokens tokens={item.tokens} />
+
+        <Flex direction="row">
+          <Button onClick={() => props.onShowCourses(item.id, item.tokens)}>Näytä kurssit</Button>
+          <Button onClick={() => props.onDropSubscription(item.id)}>Poista</Button>
         </Flex>
-        <Button onClick={() => props.onShowCourses(item.id, item.keywords, item.not_keywords)}>Näytä kurssit</Button>
-        <Button onClick={() => props.onDropSubscription(item.id)}>Poista</Button>
-      </View>
+
+        <Text fontSize="xxs">{item.id}</Text>
+      </Flex>
     </Card>
   )}
 </Collection>
+    </>}
     </>
   );
 };
