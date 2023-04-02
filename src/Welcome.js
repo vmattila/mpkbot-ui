@@ -6,8 +6,10 @@ import {
   Heading,
   Text,
   Divider,
+  Link,
    useTheme,
 } from '@aws-amplify/ui-react';
+import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
 const Welcome = () => {
   const { tokens } = useTheme();
@@ -75,7 +77,7 @@ const Welcome = () => {
 
           <Heading level={3} fontWeight={tokens.fontWeights.thin}>Kuinka usein palvelu lähettää sähköposteja?</Heading>
           <Text>
-            MPK Bot ilmoittaa uusista kursseista noin kerran päivässä asettamiesi hakuvahtien mukaan.
+            MPK Bot ilmoittaa uusista kursseista noin kerran tunnissa asettamiesi hakuvahtien mukaan. 
           </Text>
 
           <Heading level={3} fontWeight={tokens.fontWeights.thin}>Voiko samasta kurssista tulla useita sähköposteja?</Heading>
@@ -85,14 +87,24 @@ const Welcome = () => {
           </Text>
 
           <Heading level={3} fontWeight={tokens.fontWeights.thin}>Mihin tiedot ovat tallennettu?</Heading>
-          <Text>MPK Bot käyttää Amazon Web Services -palvelun Tukholman konesalia. Palvelussa käytetään seuraavia AWS:n tuotteita:
-          API Gateway, DynamoDB, Cognito, Lambda, Route53, CloudFormation, CloudFront, Simple Email Service (SES), Simple Queue Service (SQS) ja Simple Storage Service (S3) -palveluita.</Text>
+          <Text>MPK Bot käyttää Amazon Web Services -palvelun Tukholmassa sijaitsevaa konesalia. 
+          <Link href="https://github.com/vmattila/mpkbot" isExternal={true}>Tutustu ympäristön teknisiin määrittelyihin GitHub-palvelussa <FaExternalLinkAlt /></Link>
+          </Text>
 
           <Heading level={3} fontWeight={tokens.fontWeights.thin}>Haluan lopettaa palvelun käytön, miten toimin?</Heading>
           <Text>
             Kirjaudu sisään ja klikkaa nimen viereistä valikkopainiketta ja valitse Poista käyttäjätilini lopullisesti.
             Käyttäjätietosi ja hakuvahtisi poistetaan palvelusta välittömästi. Lokitiedot poistuvat 7 vrk kuluttua.
             Voit luoda poiston jälkeen käyttäjätilin uudelleen sähköpostiosoitteella.
+          </Text>
+
+          <Heading level={3} fontWeight={tokens.fontWeights.thin}>Mistä löydän palvelun lähdekoodit?</Heading>
+          <Text>
+            MPK Botin lähdekoodit ovat saatavilla <FaGithub /> GitHub-palvelussa:
+            <ul>
+              <li><Link href="https://github.com/vmattila/mpkbot-ui" isExternal={true}>mpkbot-ui (käyttöliittymä) <FaExternalLinkAlt /></Link></li>
+              <li><Link href="https://github.com/vmattila/mpkbot" isExternal={true}>mpkbot (api ja infra) <FaExternalLinkAlt /></Link></li>
+            </ul>
           </Text>
         </Flex>
 
