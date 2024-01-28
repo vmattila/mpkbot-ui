@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import {
   Table,
@@ -8,14 +8,11 @@ import {
   TableRow,
   Link,
   Card,
-} from '@aws-amplify/ui-react';
+} from "@aws-amplify/ui-react";
 
 const CourseList = (props) => {
   return (
-    <Card
-      borderRadius="medium"
-      variation="elevated"
-    >
+    <Card borderRadius="medium" variation="elevated">
       <Table>
         <TableHead>
           <TableRow>
@@ -25,24 +22,22 @@ const CourseList = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-        {props.items.map((value, index) => {
-              return <TableRow key={value.id}>
-              <TableCell>
-              <Link
-              target="_blank"
- href={value.link}
- color="#007EB9"
->
-{value.name}
-</Link>
+          {props.items.map((value, index) => {
+            return (
+              <TableRow key={value.id}>
+                <TableCell>
+                  <Link target="_blank" href={value.link} color="#007EB9">
+                    {value.name}
+                  </Link>
                 </TableCell>
-              <TableCell>{value.timeinfo}</TableCell>
-              <TableCell>{value.location}</TableCell>
-            </TableRow>
-            })}
+                <TableCell>{value.timeinfo}</TableCell>
+                <TableCell>{value.location}</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
-      </Card>
+    </Card>
   );
 };
 export default CourseList;

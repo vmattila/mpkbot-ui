@@ -1,29 +1,30 @@
-import { useState, useEffect, useMemo } from 'react'
-import Auth from '@aws-amplify/auth'
+import { useState, useEffect, useMemo } from "react";
+import Auth from "@aws-amplify/auth";
 
 export default ({ provider, options }) => {
   const [state, setState] = useState({
     user: {},
-    isSignedIn: false
-  })
+    isSignedIn: false,
+  });
 
   const auth = useMemo(() => {
-    Auth.configure(options)
-    return Auth
-  }, [])
+    Auth.configure(options);
+    return Auth;
+  }, []);
 
   useEffect(() => {
-    auth.currentAuthenticatedUser()
+    auth
+      .currentAuthenticatedUser()
       .then((user) => setState({ user, isSignedIn: true }))
-      .catch(() => {})
-  }, [])
+      .catch(() => {});
+  }, []);
 
-  const signIn = () => auth.federatedSignIn({ provider })
-  const signOut = () => auth.signOut()
+  const signIn = () => auth.federatedSignIn({ provider });
+  const signOut = () => auth.signOut();
 
   return {
     ...state,
     signIn,
-    signOut
-  }
-}
+    signOut,
+  };
+};

@@ -1,14 +1,14 @@
-import { fetchAuthSession } from 'aws-amplify/auth';
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export const getAuthHeaderForApiCall = async () => {
-    const { tokens } = await fetchAuthSession()
-    const idToken = tokens?.idToken;
-    const hdr = `Bearer ${idToken}`;
+  const { tokens } = await fetchAuthSession();
+  const idToken = tokens?.idToken;
+  const hdr = `Bearer ${idToken}`;
 
-    return hdr;
+  return hdr;
 };
 export const getCurrentUserEmail = async () => {
-    const { tokens } = await fetchAuthSession()
-    const idToken = tokens?.idToken;
-    return idToken.payload.email;
+  const { tokens } = await fetchAuthSession();
+  const idToken = tokens?.idToken;
+  return idToken.payload.email;
 };
