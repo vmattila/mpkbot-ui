@@ -1,33 +1,25 @@
 import React, { useState } from "react";
 
-import {
-  Accordion,
-  Flex,
-  Text,
-} from "@aws-amplify/ui-react";
+import { Accordion, Flex, Text } from "@aws-amplify/ui-react";
 
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/dist/sweetalert2.css";
 
 import withReactContent from "sweetalert2-react-content";
-import { AccountSettings } from '@aws-amplify/ui-react';
+import { AccountSettings } from "@aws-amplify/ui-react";
 const MySwal = withReactContent(Swal);
 
 const ChangePasswordBlock = () => {
   const [value, setValue] = useState([]);
   const handleSuccess = () => {
     MySwal.fire({
-      title: (
-        <Text>
-          Salasanasi on vaihdettu.
-        </Text>
-      ),
+      title: <Text>Salasanasi on vaihdettu.</Text>,
       showCancelButton: false,
       confirmButtonText: "Selvä!",
     }).then(() => {
       setValue([]);
     });
-  }
+  };
 
   return (
     <Flex direction="column">
@@ -41,11 +33,11 @@ const ChangePasswordBlock = () => {
               <AccountSettings.ChangePassword
                 onSuccess={handleSuccess}
                 displayText={{
-                  currentPasswordLabel: 'Syötä nykyinen salasanasi',
-                  newPasswordLabel: 'Syötä uusi salasana',
-                  confirmPasswordLabel: 'Vahvista uusi salasana',
-                  updatePasswordText: 'Vaihda salasana',
-                }}  
+                  currentPasswordLabel: "Syötä nykyinen salasanasi",
+                  newPasswordLabel: "Syötä uusi salasana",
+                  confirmPasswordLabel: "Vahvista uusi salasana",
+                  updatePasswordText: "Vaihda salasana",
+                }}
               />
             </Flex>
           </Accordion.Content>
