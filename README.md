@@ -1,7 +1,7 @@
 # MPK Bot -käyttöliittymä (React)
 
 Tämä repository pitää sisällään MPK Bot -palvelun käyttöliittymän lähdekoodit (React). Löydät palvelun osoitteesta
-https://beta.mpkbot.fi/
+https://mpkbot.fi/
 
 Palvelun API:n ja infran lähdekoodit löytyvät erillisestä repositorystä: https://github.com/vmattila/mpkbot
 
