@@ -1,8 +1,5 @@
-import { signInWithRedirect } from "aws-amplify/auth";
-
 import {
   Flex,
-  Button,
   Heading,
   Text,
   Divider,
@@ -10,6 +7,7 @@ import {
   useTheme,
 } from "@aws-amplify/ui-react";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import AuthenticationBox from "./AuthenticationBox";
 
 const Welcome = () => {
   const { tokens } = useTheme();
@@ -34,9 +32,7 @@ const Welcome = () => {
       </Text>
 
       <Flex direction="row" justifyContent="center">
-        <Button onClick={() => signInWithRedirect()} variation="primary">
-          Kirjaudu sisään
-        </Button>
+        <AuthenticationBox />
       </Flex>
 
       <Divider />
@@ -74,16 +70,8 @@ const Welcome = () => {
           Kirjaudunko MPK:n koulutuskalenterin tunnuksilla?
         </Heading>
         <Text>
-          Et, vaan sinun tulee luoda MPK Bot -palveluun oma tunnus. Klikkaa
-          ensin Kirjaudu sisään ja valitse kirjautumissivulta "Sign up".
-        </Text>
-
-        <Heading level={3} fontWeight={tokens.fontWeights.thin}>
-          Miksi kirjautumissivu on englanninkielinen?
-        </Heading>
-        <Text>
-          Kirjautuminen käyttää AWS Cognito -palvelua, jossa käytettävissä on
-          vain englanti.
+          Et, vaan sinun tulee luoda MPK Bot -palveluun oma tunnus. Älä käytä
+          samaa salasanaa, mitä käytät MPK:n koulutuskalenterissa.
         </Text>
 
         <Heading level={3} fontWeight={tokens.fontWeights.thin}>

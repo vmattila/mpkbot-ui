@@ -9,6 +9,7 @@ import { getCurrentUserEmail, getAuthHeaderForApiCall } from "./authHelper";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/dist/sweetalert2.css";
 import withReactContent from "sweetalert2-react-content";
+import ChangePasswordBlock from "./ChangePasswordBlock";
 
 const MySwal = withReactContent(Swal);
 
@@ -77,6 +78,8 @@ const Home = () => {
       </Flex>
 
       <CourseFinder />
+
+      <ChangePasswordBlock />
     </Flex>
   );
 };
