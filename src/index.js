@@ -14,15 +14,20 @@ import '@aws-amplify/ui-react/styles.css';
 
 Amplify.configure({
   Auth: {
-    userPoolId: process.env.REACT_APP_USER_POOL_ID,
     userPoolWebClientId: process.env.REACT_APP_USER_WEB_CLIENT_ID,
-    oauth: {
-      domain: process.env.REACT_APP_COGNITO_DOMAIN,
-      scope: ['openid'],
-      redirectSignIn: process.env.REACT_APP_COGNITO_REDIRECT_URL,
-      redirectSignOut: process.env.REACT_APP_COGNITO_REDIRECT_URL,
-      region: 'eu-north-1',
-      responseType: 'token'
+    region: 'eu-north-1',
+    Cognito: {
+      userPoolId: process.env.REACT_APP_USER_POOL_ID,
+      userPoolClientId: process.env.REACT_APP_USER_WEB_CLIENT_ID,
+      loginWith: { // Optional
+        oauth: {
+          domain: process.env.REACT_APP_COGNITO_DOMAIN,
+          scopes: ['openid'],
+          redirectSignIn: [process.env.REACT_APP_COGNITO_REDIRECT_URL],
+          redirectSignOut: [process.env.REACT_APP_COGNITO_REDIRECT_URL],
+          responseType: 'token'
+        }
+      }
     }
   }
 })
