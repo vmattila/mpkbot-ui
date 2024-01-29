@@ -21,8 +21,9 @@ const Welcome = () => {
       </Heading>
 
       <Text lineHeight="1.5em">
-        MPK Bot lähettää sinulle sähköpostitse tiedon uusista
-        Maanpuolustuskoulutusyhdistyksen kursseista antamillasi hakusanoilla.
+        MPK Bot toimii hakuvahtina Maanpuolustuskoulutusyhdistyksen kursseihin.
+        Se lähettää sinulle sähköpostitse tiedon uusista koulutuskalenteriin
+        avautuvista kursseista, jotka täsmäävät antamiisi hakusanoihin.
         Esimerkiksi jos lisäät hakusanan "ammunta", saat sähköpostiviestin aina,
         kun uusi ammuntaan liittyvä kurssi avautuu kurssikalenteriin.
       </Text>
@@ -71,7 +72,7 @@ const Welcome = () => {
         </Heading>
         <Text>
           Et, vaan sinun tulee luoda MPK Bot -palveluun oma tunnus. Älä käytä
-          samaa salasanaa, mitä käytät MPK:n koulutuskalenterissa.
+          samaa salasanaa, jota käytät MPK:n koulutuskalenterissa.
         </Text>
 
         <Heading level={3} fontWeight={tokens.fontWeights.thin}>
@@ -79,7 +80,7 @@ const Welcome = () => {
         </Heading>
         <Text>
           Rekisteröitymiseen tarvitset vain toimivan sähköpostiosoitteen sekä
-          valitsemasi salasanan. Hakuvahdeista tallennetaan antamasi hakuehdot.
+          valitsemasi salasanan. Hakuvahdeista tallennetaan antamasi hakusanat.
           Kun palvelu löytää hakuvahtiin sopivan kurssin, tallennetaan osumasta
           tieto hakuvahtiin jotta et saa samasta kurssista uutta ilmoitusta.
           Lisäksi palvelu kerää lokitietoja tekemistäsi toimenpiteistä. Lokeja
@@ -87,15 +88,15 @@ const Welcome = () => {
         </Text>
 
         <Heading level={3} fontWeight={tokens.fontWeights.thin}>
-          Kuinka usein palvelu lähettää sähköposteja?
+          Kuinka nopeasti palvelu ilmoittaa kurssista?
         </Heading>
         <Text>
-          MPK Bot ilmoittaa uusista kursseista noin kerran tunnissa asettamiesi
-          hakuvahtien mukaan.
+          MPK Bot ilmoittaa uusista kursseista noin tunnin sisällä siitä, kun
+          kurssi on julkaistu koulutuskalenteriin.
         </Text>
 
         <Heading level={3} fontWeight={tokens.fontWeights.thin}>
-          Voiko samasta kurssista tulla useita sähköposteja?
+          Voiko samasta kurssista tulla useita ilmoituksia?
         </Heading>
         <Text>
           Yhdestä kurssista lähetetään pääsääntöisesti vain yksi
