@@ -1,4 +1,5 @@
 import {
+  Alert,
   Flex,
   Heading,
   Text,
@@ -13,6 +14,18 @@ const Welcome = () => {
   const { tokens } = useTheme();
   return (
     <Flex direction="column">
+      <Alert variation="error" heading="Palvelu sulkeutuu pysyvästi 15.6.2026">
+        MPKBot sulkeutuu pysyvästi MPK:n verkkopalvelu-uudistuksen myötä
+        15.6.2026.{" "}
+        <Link
+          href="https://mpk.fi/ajankohtaista/mpkn-uudet-verkkosivut-ja-koulutuskalenteri-avautuvat-kesalla/"
+          isExternal={true}
+          fontWeight={700}
+        >
+          Lue lisää <FaExternalLinkAlt />
+        </Link>
+      </Alert>
+
       <Heading level={1}>MPK Bot</Heading>
 
       <Heading level={4} fontStyle="italic" fontWeight={200}>

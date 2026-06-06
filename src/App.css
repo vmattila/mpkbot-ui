@@ -2,6 +2,33 @@
   text-align: center;
 }
 
+.shutdown-ribbon {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background-color: #c0150b;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.shutdown-ribbon__link {
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+.shutdown-ribbon__link:hover,
+.shutdown-ribbon__link:focus {
+  color: #ffe9e7;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
